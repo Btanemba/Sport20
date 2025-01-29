@@ -27,7 +27,7 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-         // Disable the default actions column on the far right
+        // Disable the default actions column on the far right
         CRUD::setOperationSetting('showActionsColumn', false);
         CRUD::setModel(\App\Models\User::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
@@ -42,8 +42,8 @@ class UserCrudController extends CrudController
     protected function setupListOperation()
     {
 
-         // Add the custom actions column first (on the left)
-         CRUD::addColumn([
+        // Add the custom actions column first (on the left)
+        CRUD::addColumn([
             'name' => 'actions',
             'type' => 'view',
             'view' => 'vendor.backpack.crud.columns.custom_button', // Path to your custom view
@@ -54,7 +54,7 @@ class UserCrudController extends CrudController
         CRUD::setOperationSetting('showActionsColumn', false);
 
         CRUD::setFromDb(); // set columns from db columns.
-
+       
         CRUD::column('person.first_name')->label('First Name');
         CRUD::column('person.last_name')->label('Last Name');
         CRUD::column('person.street')->label('Street');
@@ -65,9 +65,8 @@ class UserCrudController extends CrudController
         CRUD::column('person.country')->label('Country');
         CRUD::column('person.phone')->label('Phone');
 
-         // Disable the default actions column on the far right
-         CRUD::setOperationSetting('showActionsColumn', false);
-
+        // Disable the default actions column on the far right
+        CRUD::setOperationSetting('showActionsColumn', false);
     }
 
     /**
@@ -93,6 +92,13 @@ class UserCrudController extends CrudController
         CRUD::field('person.region')->label('Region');
         CRUD::field('person.country')->label('Country');
         CRUD::field('person.phone')->label('Phone');
+
+        // Active field (Yes/No dropdown)
+        CRUD::field('active')
+            ->label('Active')
+            ->type('select_from_array')
+            ->options([1 => 'Yes', 0 => 'No'])
+            ->default(1);  // Set the default value to 'Yes'
     }
 
     /**

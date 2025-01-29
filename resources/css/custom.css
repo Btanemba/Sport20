@@ -1,0 +1,40 @@
+/* custom.css */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
+
+/* Apply Ubuntu font globally */
+body, .content-wrapper, .main-header, .main-sidebar, .main-footer {
+    font-family: 'Ubuntu', sans-serif !important;
+}
+
+/* Set a slightly red background */
+body {
+    background-color: #ffcccc !important; /* Light Red */
+}
+
+/* Red border color for form fields */
+input, select, textarea {
+    border-color: #e30613 !important; /* Special Olympics red color */
+}
+
+/* Red border for focused form fields */
+input:focus, select:focus, textarea:focus {
+    border-color: #ed5454 !important; /* Darker red on focus */
+}
+
+/* Red background color for buttons */
+.btn-primary {
+    background-color: #eb6b73 !important; /* Special Olympics red color */
+    border-color: #f24848 !important;     /* Darker red border */
+}
+
+/* Red button on hover */
+.btn-primary:hover {
+    background-color: #cb4c4c !important;
+    border-color: #f44f4f !important;
+}
+
+/* Red button on focus */
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(214, 79, 79, 0.5) !important;
+}
+

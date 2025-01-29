@@ -1,0 +1,59 @@
+/* Apply Ubuntu font globally */
+body, .content-wrapper, .main-header, .main-sidebar, .main-footer {
+    font-family: 'Ubuntu', sans-serif !important;
+}
+
+/* Set a slightly red background */
+body {
+    background-color: #ffcccc !important; /* Light Red */
+}
+
+/* Red border color for form fields */
+input, select, textarea {
+    border-color: #e30613 !important; /* Special Olympics red color */
+}
+
+/* Red border for focused form fields */
+input:focus, select:focus, textarea:focus {
+    border-color: #d90000 !important; /* Darker red on focus */
+}
+
+/* Red background color for buttons */
+.btn-primary {
+    background-color: #e30613 !important; /* Special Olympics red color */
+    border-color: #d90000 !important;     /* Darker red border */
+}
+
+/* Red button on hover */
+.btn-primary:hover {
+    background-color: #d90000 !important;
+    border-color: #c70000 !important;
+}
+
+/* Red button on focus */
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(217, 0, 0, 0.5) !important;
+}
+
+/* Custom red highlights for input fields (focus state) */
+input:focus, textarea:focus, select:focus {
+    border-color: #FF0000 !important;  /* Special Olympics red or any desired red color */
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5) !important;
+}
+
+/* Custom styling for buttons */
+button, .btn {
+    background-color: #FF0000 !important;  /* Special Olympics red or any desired red color */
+    border-color: #FF0000 !important;
+    color: white !important;
+}
+
+button:hover, .btn:hover {
+    background-color: #D50000 !important;  /* Darker shade of red for hover */
+    border-color: #D50000 !important;
+}
+
+/* Optional: Styling for form fields */
+input, textarea, select {
+    border-color: #FF0000;  /* Red border for input fields */
+}

@@ -41,6 +41,9 @@ return [
     'styles' => [
         base_path('vendor/backpack/theme-tabler/resources/assets/css/color-adjustments.css'),
         base_path('vendor/backpack/theme-tabler/resources/assets/css/colors.css'),
+
+        // Your custom styles (ensure this path is correct)
+        public_path('css/custom.css'),  // This will load the custom CSS file from the public directory
     ],
 
     /**
@@ -105,10 +108,12 @@ return [
      * the classes that make up the look of your panel.
      */
     'classes' => [
+
+        'body' => 'bg-light-red',
         /**
          * Use this to pass classes to the <body> HTML element, on all pages.
          */
-        'body' => null,
+        // 'body' => null,
 
         /**
          * For background colors use:
@@ -120,6 +125,8 @@ return [
          */
         'topHeader' => null,
 
+
+
         /**
          * Applies only for Vertical Menu Layout
          * For standard sidebar look (transparent):
@@ -129,6 +136,7 @@ return [
          * bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
          */
         'sidebar' => null,
+
 
         /**
          * Used in the top container menu when the layout is of horizontal type.

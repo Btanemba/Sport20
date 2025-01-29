@@ -1,17 +1,7 @@
-@import '@fontsource/ubuntu';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
     font-family: 'Ubuntu', sans-serif;
     font-weight: 400; /* Regular weight */
 }
-body {
-    background-color: #ffcccc !important; /* Light Red */
-}
-
 
 h1 {
     font-family: 'Ubuntu', sans-serif;
