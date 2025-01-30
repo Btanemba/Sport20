@@ -104,7 +104,7 @@
                   </th>
                 @endforeach
 
-                @if ( $crud->buttons()->where('stack', 'line')->count() )
+                 @if ( $crud->buttons()->where('stack', 'line')->count() )
                   <th data-orderable="false"
                       data-priority="{{ $crud->getActionsColumnPriority() }}"
                       data-visible-in-export="false"

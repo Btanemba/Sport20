@@ -6,6 +6,7 @@ use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Person;
+use App\Models\User;
 
 /**
  * Class UserCrudController
@@ -27,11 +28,12 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-        // Disable the default actions column on the far right
-        CRUD::setOperationSetting('showActionsColumn', false);
-        CRUD::setModel(\App\Models\User::class);
+
+        $this->crud->removeAllButtonsFromStack('line');
+        CRUD::setModel(User::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
         CRUD::setEntityNameStrings('user', 'users');
+        CRUD::setOperationSetting('showActionsColumn', false);
     }
 
     /**
@@ -41,8 +43,6 @@ class UserCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-
-        // Add the custom actions column first (on the left)
         CRUD::addColumn([
             'name' => 'actions',
             'type' => 'view',
@@ -51,10 +51,17 @@ class UserCrudController extends CrudController
             'searchable' => false,
         ]);
 
-        CRUD::setOperationSetting('showActionsColumn', false);
-
         CRUD::setFromDb(); // set columns from db columns.
-       
+        // $this->crud->addColumn([
+        //     'name' => 'two_factor_secret',
+        //     'label' => '2FA Status',
+        //     'type' => 'closure',
+        //     'function' => function($entry) {
+        //         return $entry->two_factor_secret ? 'Enabled' : 'Disabled';
+        //     }
+        // ]);
+
+        // Add person details as columns
         CRUD::column('person.first_name')->label('First Name');
         CRUD::column('person.last_name')->label('Last Name');
         CRUD::column('person.street')->label('Street');
@@ -65,8 +72,7 @@ class UserCrudController extends CrudController
         CRUD::column('person.country')->label('Country');
         CRUD::column('person.phone')->label('Phone');
 
-        // Disable the default actions column on the far right
-        CRUD::setOperationSetting('showActionsColumn', false);
+
     }
 
     /**
@@ -76,7 +82,6 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setOperationSetting('showActionsColumn', false);
         CRUD::setValidation(UserRequest::class);
 
         // User fields
@@ -99,6 +104,8 @@ class UserCrudController extends CrudController
             ->type('select_from_array')
             ->options([1 => 'Yes', 0 => 'No'])
             ->default(1);  // Set the default value to 'Yes'
+
+        // $this->crud->addButtonFromView('line', '2fa_dropdown', '2fa_dropdown', 'end');
     }
 
     /**
@@ -108,7 +115,7 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->setupCreateOperation();  // Reuse the same setup as Create
     }
 
     /**
@@ -119,13 +126,13 @@ class UserCrudController extends CrudController
      */
     public function update($id)
     {
-        $user = \App\Models\User::findOrFail($id);
-
-        // Update the user's email or other fields
+        // Find the user and update basic details
+        $user = User::findOrFail($id);
         $user->email = request('email');
+        // $user->password = empty(request('password')) ? bcrypt('password123') : bcrypt(request('password'));
         $user->save();
 
-        // Now handle the person information
+        // Update or create associated person data
         $person = $user->person ?? new Person();
         $person->first_name = request('person.first_name');
         $person->last_name = request('person.last_name');
@@ -136,13 +143,10 @@ class UserCrudController extends CrudController
         $person->region = request('person.region');
         $person->country = request('person.country');
         $person->phone = request('person.phone');
-        $person->user_id = $user->id;
-
-        // Save the person data
+        $person->user_id = $user->id;  // Ensure correct relationship
         $person->save();
 
-        // Redirect back after update
-
+        // Redirect after update
         return redirect()->to('admin/user');
     }
 }

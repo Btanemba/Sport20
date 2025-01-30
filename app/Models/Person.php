@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Person extends Model
 {
-    
-    use HasFactory;
+
+    use HasFactory,CrudTrait;
 
     protected $table = 'persons';
 
@@ -29,6 +29,19 @@ class Person extends Model
         'created_by',
         'updated_by',
     ];
+
+    protected $casts = [
+        'first_name' => 'string',
+        'last_name' => 'string',
+        'street' => 'string',
+        'number' => 'string',
+        'city' => 'string',
+        'zip' => 'string',
+        'region' => 'string',
+        'country' => 'string',
+        'phone' => 'string',
+    ];
+
 
     // Set the user who created or updated the record
     protected static function booted()

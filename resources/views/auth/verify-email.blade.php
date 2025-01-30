@@ -1,4 +1,8 @@
 <x-guest-layout>
+       <!-- Logo -->
+       <div class="text-center mb-6">
+        <img src="{{ asset('logo.jpeg') }}" alt="Your Logo" class="w-45 h-32 mx-auto">
+    </div>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
     </div>
