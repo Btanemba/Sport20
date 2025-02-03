@@ -1,27 +1,20 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect the root route to the login page
 Route::get('/', function () {
     return redirect()->route('login');
 });
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
-Route::get('/admin/dasboard', function () {
+// Override Fortify's Register Route
+Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
+
+// If you want to use a registration view route as well
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register.view');
+
+// Other routes
+Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-
-
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-//  require __DIR__.'/auth.php';
