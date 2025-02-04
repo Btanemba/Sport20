@@ -1,4 +1,8 @@
 <x-guest-layout>
+    <!-- Logo -->
+    <div class="text-center mb-6">
+        <img src="{{ asset('logo.jpeg') }}" alt="Your Logo" class="w-45 h-32 mx-auto">
+    </div>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </div>

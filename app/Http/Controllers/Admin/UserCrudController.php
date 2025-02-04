@@ -8,11 +8,6 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Person;
 use App\Models\User;
 
-/**
- * Class UserCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class UserCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -21,14 +16,8 @@ class UserCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
     public function setup()
     {
-
         $this->crud->removeAllButtonsFromStack('line');
         CRUD::setModel(User::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
@@ -36,32 +25,17 @@ class UserCrudController extends CrudController
         CRUD::setOperationSetting('showActionsColumn', false);
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @return void
-     */
     protected function setupListOperation()
     {
         CRUD::addColumn([
             'name' => 'actions',
             'type' => 'view',
-            'view' => 'vendor.backpack.crud.columns.custom_button', // Path to your custom view
+            'view' => 'vendor.backpack.crud.columns.custom_button',
             'orderable' => false,
             'searchable' => false,
         ]);
 
-        CRUD::setFromDb(); // set columns from db columns.
-        // $this->crud->addColumn([
-        //     'name' => 'two_factor_secret',
-        //     'label' => '2FA Status',
-        //     'type' => 'closure',
-        //     'function' => function($entry) {
-        //         return $entry->two_factor_secret ? 'Enabled' : 'Disabled';
-        //     }
-        // ]);
-
-        // Add person details as columns
+        CRUD::setFromDb();
         CRUD::column('person.first_name')->label('First Name');
         CRUD::column('person.last_name')->label('Last Name');
         CRUD::column('person.street')->label('Street');
@@ -72,22 +46,21 @@ class UserCrudController extends CrudController
         CRUD::column('person.country')->label('Country');
         CRUD::column('person.phone')->label('Phone');
 
-
+        // Add 2FA status column
+        CRUD::column('two_factor_secret')
+            ->label('2FA Status')
+            ->type('closure')
+            ->function(function ($entry) {
+                return $entry->two_factor_secret ? 'Yes' : 'No';
+            });
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(UserRequest::class);
 
-        // User fields
         CRUD::field('email')->label('Email');
 
-        // Person fields
         CRUD::field('person.first_name')->label('First Name');
         CRUD::field('person.last_name')->label('Last Name');
         CRUD::field('person.street')->label('Street');
@@ -98,38 +71,32 @@ class UserCrudController extends CrudController
         CRUD::field('person.country')->label('Country');
         CRUD::field('person.phone')->label('Phone');
 
-        // Active field (Yes/No dropdown)
         CRUD::field('active')
             ->label('Active')
             ->type('select_from_array')
             ->options([1 => 'Yes', 0 => 'No'])
-            ->default(1);  // Set the default value to 'Yes'
+            ->default(1);
 
-        // $this->crud->addButtonFromView('line', '2fa_dropdown', '2fa_dropdown', 'end');
+        // Add 2FA field
+        CRUD::field('two_factor_secret')
+            ->label('2FA Enabled')
+            ->type('select_from_array')
+            ->options([1 => 'Yes', 0 => 'No'])
+            ->default(0);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();  // Reuse the same setup as Create
+        $this->setupCreateOperation();
     }
 
-    /**
-     * Handle the update operation, including the related `person` data.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function update($id)
     {
         // Find the user and update basic details
         $user = User::findOrFail($id);
         $user->email = request('email');
-        // $user->password = empty(request('password')) ? bcrypt('password123') : bcrypt(request('password'));
+        $user->active = request('active'); // Update the 'active' field
+        $user->two_factor_secret = request('two_factor_secret') ? 'enabled' : null; // Update 2FA status
         $user->save();
 
         // Update or create associated person data
