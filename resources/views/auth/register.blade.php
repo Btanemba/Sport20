@@ -25,7 +25,7 @@
                             required autocomplete="new-password" />
 
             <!-- Eye Toggle Button -->
-            <button type="button" onclick="togglePassword('password', 'eye-icon', 'eye-slash-icon')" class="absolute inset-y-0 right-0 flex items-center px-3">
+            <button type="button" onclick="togglePassword('password', 'eye-icon', 'eye-slash-icon')" class="absolute right-3 top-2/3 transform -translate-y-1/2">
                 <img id="eye-icon" src="{{ asset('icons/eye.png') }}" class="h-5 w-5" alt="Show Password">
                 <img id="eye-slash-icon" src="{{ asset('icons/eye-slash.png') }}" class="h-5 w-5 hidden" alt="Hide Password">
             </button>
@@ -43,7 +43,7 @@
                             required autocomplete="new-password" />
 
             <!-- Eye Toggle Button -->
-            <button type="button" onclick="togglePassword('password_confirmation', 'eye-icon-confirm', 'eye-slash-icon-confirm')" class="absolute inset-y-0 right-0 flex items-center px-3">
+            <button type="button" onclick="togglePassword('password_confirmation', 'eye-icon-confirm', 'eye-slash-icon-confirm')" class="absolute right-3 top-2/3 transform -translate-y-1/2">
                 <img id="eye-icon-confirm" src="{{ asset('icons/eye.png') }}" class="h-5 w-5" alt="Show Password">
                 <img id="eye-slash-icon-confirm" src="{{ asset('icons/eye-slash.png') }}" class="h-5 w-5 hidden" alt="Hide Password">
             </button>

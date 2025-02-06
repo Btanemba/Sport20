@@ -17,6 +17,8 @@ Route::group([
     'namespace' => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
     Route::crud('user', 'UserCrudController');
+    Route::get('edit-account-info', 'MyAccountController@getAccountInfoForm')->name('backpack.account.info');
+    Route::post('edit-account-info', 'MyAccountController@postAccountInfoForm')->name('backpack.account.info.store');
 }); // this should be the absolute last line of this file
 
 /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MyAccountController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,7 @@ Route::get('/register', [RegisteredUserController::class, 'create'])->name('regi
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// My Account Routes
+
+ Route::post('change-password', [MyAccountController::class, 'postChangePasswordForm'])->name('backpack.account.password.store');
