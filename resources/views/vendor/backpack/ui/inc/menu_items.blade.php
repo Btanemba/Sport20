@@ -5,7 +5,7 @@
     </a>
 </li>
 
-<x-backpack::menu-item title="Users" icon="la la-user nav-icon" :link="backpack_url('user')" />
+<x-backpack::menu-item title="Persons" icon="la la-user nav-icon" :link="backpack_url('user')" />
 
 <li class="nav-item">
     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

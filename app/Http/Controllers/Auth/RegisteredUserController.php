@@ -47,7 +47,10 @@ class RegisteredUserController extends Controller
         }
 
         // Create the new user
-        event(new Registered($user = $creator->create($request->all())));
+        // event(new Registered($user = $creator->create($request->all())));
+
+        $user = $creator->create($request->all());
+
 
         // Log the user in after registration
         $this->guard->login($user, $request->boolean('remember'));
