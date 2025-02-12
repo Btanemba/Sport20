@@ -35,16 +35,90 @@ class UserCrudController extends CrudController
             'searchable' => false,
         ]);
 
+        // Automatically add all columns from the database
         CRUD::setFromDb();
-        CRUD::column('person.first_name')->label('First Name');
-        CRUD::column('person.last_name')->label('Last Name');
-        CRUD::column('person.street')->label('Street');
-        CRUD::column('person.number')->label('Number');
-        CRUD::column('person.city')->label('City');
-        CRUD::column('person.zip')->label('ZIP');
-        CRUD::column('person.region')->label('Region');
-        CRUD::column('person.country')->label('Country');
-        CRUD::column('person.phone')->label('Phone');
+
+        // Add custom columns for related Person model fields
+        CRUD::column('person.first_name')
+            ->label('First Name')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('first_name', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.last_name')
+            ->label('Last Name')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('last_name', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.street')
+            ->label('Street')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('street', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.number')
+            ->label('Number')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('number', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.city')
+            ->label('City')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('city', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.zip')
+            ->label('ZIP')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('zip', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.region')
+            ->label('Region')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('region', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.country')
+            ->label('Country')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('country', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
+        CRUD::column('person.phone')
+            ->label('Phone')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('phone', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
 
         // Add 2FA status column
         CRUD::column('two_factor_secret')
@@ -52,7 +126,11 @@ class UserCrudController extends CrudController
             ->type('closure')
             ->function(function ($entry) {
                 return $entry->two_factor_secret ? 'Yes' : 'No';
-            });
+            })
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhere('two_factor_secret', 'like', '%' . $searchTerm . '%');
+            })
+            ->orderable(true); // Make sortable
     }
 
     protected function setupCreateOperation()

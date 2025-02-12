@@ -23,7 +23,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="email">{{ trans('backpack::base.email') }}</label>
-                    <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
+                    <input type="email" name="email" class="form-control" value="{{ $user->email }}" disabled>
                 </div>
                 <br>
 
