@@ -57,6 +57,15 @@ class UserCrudController extends CrudController
             })
             ->orderable(true); // Make sortable
 
+            CRUD::column('person.gender')
+            ->label('Gender')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('person', function ($q) use ($searchTerm) {
+                    $q->where('street', 'like', '%' . $searchTerm . '%');
+                });
+            })
+            ->orderable(true); // Make sortable
+
         CRUD::column('person.street')
             ->label('Street')
             ->searchLogic(function ($query, $column, $searchTerm) {
@@ -141,6 +150,14 @@ class UserCrudController extends CrudController
 
         CRUD::field('person.first_name')->label('First Name');
         CRUD::field('person.last_name')->label('Last Name');
+        
+//        CRUD::field('person.gender')->label('Gender');
+        CRUD::field('person.gender')
+        ->label('Gender')
+        ->type('select_from_array')
+        ->options([1 => 'Male', 0 => 'Female']);
+       
+     
         CRUD::field('person.street')->label('Street');
         CRUD::field('person.number')->label('Number');
         CRUD::field('person.city')->label('City');
@@ -181,6 +198,7 @@ class UserCrudController extends CrudController
         $person = $user->person ?? new Person();
         $person->first_name = request('person.first_name');
         $person->last_name = request('person.last_name');
+        $person->street = request('person.gender');
         $person->street = request('person.street');
         $person->number = request('person.number');
         $person->city = request('person.city');
