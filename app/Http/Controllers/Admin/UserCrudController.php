@@ -18,11 +18,14 @@ class UserCrudController extends CrudController
 
     public function setup()
     {
-        $this->crud->removeAllButtonsFromStack('line');
+        
         CRUD::setModel(User::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
         CRUD::setEntityNameStrings('user', 'users');
-        CRUD::setOperationSetting('showActionsColumn', false);
+        CRUD::setOperationSetting('showActionsColumn', true);
+        $this->crud->denyAccess('show'); // This will remove the preview button
+        $this->crud->removeAllButtonsFromStack('line'); // Remove all default buttons
+
     }
 
     protected function setupListOperation()
@@ -31,6 +34,7 @@ class UserCrudController extends CrudController
             'name' => 'actions',
             'type' => 'view',
             'view' => 'vendor.backpack.crud.columns.custom_button',
+            'label' => 'ACTIONS',
             'orderable' => false,
             'searchable' => false,
         ]);
@@ -46,7 +50,7 @@ class UserCrudController extends CrudController
                     $q->where('first_name', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         CRUD::column('person.last_name')
             ->label('Last Name')
@@ -64,7 +68,7 @@ class UserCrudController extends CrudController
                     $q->where('street', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         CRUD::column('person.number')
             ->label('Number')
@@ -73,7 +77,7 @@ class UserCrudController extends CrudController
                     $q->where('number', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         CRUD::column('person.city')
             ->label('City')
@@ -82,7 +86,7 @@ class UserCrudController extends CrudController
                     $q->where('city', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         CRUD::column('person.zip')
             ->label('ZIP')
@@ -91,7 +95,7 @@ class UserCrudController extends CrudController
                     $q->where('zip', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         CRUD::column('person.region')
             ->label('Region')
@@ -100,7 +104,7 @@ class UserCrudController extends CrudController
                     $q->where('region', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         CRUD::column('person.country')
             ->label('Country')
@@ -109,7 +113,7 @@ class UserCrudController extends CrudController
                     $q->where('country', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         CRUD::column('person.phone')
             ->label('Phone')
@@ -118,7 +122,7 @@ class UserCrudController extends CrudController
                     $q->where('phone', 'like', '%' . $searchTerm . '%');
                 });
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
 
         // Add 2FA status column
         CRUD::column('two_factor_secret')
@@ -130,7 +134,7 @@ class UserCrudController extends CrudController
             ->searchLogic(function ($query, $column, $searchTerm) {
                 $query->orWhere('two_factor_secret', 'like', '%' . $searchTerm . '%');
             })
-            ->orderable(true); // Make sortable
+            ->orderable(true);
     }
 
     protected function setupCreateOperation()

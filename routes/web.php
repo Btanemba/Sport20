@@ -16,7 +16,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])->name('regi
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register.view');
 
 // Other routes
-Route::get('/admin/dashboard', function () {
+Route::get('/admin', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

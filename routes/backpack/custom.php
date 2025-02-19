@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdministratorCrudController;
+
 
 // --------------------------
 // Custom Backpack Routes
@@ -19,6 +21,7 @@ Route::group([
     Route::crud('user', 'UserCrudController');
     Route::get('edit-account-info', 'MyAccountController@getAccountInfoForm')->name('backpack.account.info');
     Route::post('edit-account-info', 'MyAccountController@postAccountInfoForm')->name('backpack.account.info.store');
+    Route::crud('administrator', 'AdministratorCrudController');
 }); // this should be the absolute last line of this file
 
 /**

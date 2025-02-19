@@ -7,6 +7,9 @@
 
 <x-backpack::menu-item title="Persons" icon="la la-user nav-icon" :link="backpack_url('user')" />
 
+<x-backpack::menu-item title="Administrators" icon="la la-users-cog" :link="backpack_url('administrator')" />
+
+
 <li class="nav-item">
     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="la la-lock nav-icon"></i> {{ trans('backpack::base.logout') }}
@@ -17,4 +20,6 @@
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
+
+
 

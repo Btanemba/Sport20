@@ -22,3 +22,23 @@ h1 {
     font-family: 'Ubuntu', sans-serif;
     font-weight: 300; /* Light weight */
 }
+
+/* Add this to your custom CSS file */
+.table-bordered {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: collapse;
+}
+
+.table-bordered th,
+.table-bordered td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}

@@ -6,12 +6,10 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class Person extends Model
 {
-
-    use HasFactory,CrudTrait;
+    use HasFactory, CrudTrait;
 
     protected $table = 'persons';
 
@@ -30,20 +28,6 @@ class Person extends Model
         'updated_by',
     ];
 
-    protected $casts = [
-        'first_name' => 'string',
-        'last_name' => 'string',
-        'street' => 'string',
-        'number' => 'string',
-        'city' => 'string',
-        'zip' => 'string',
-        'region' => 'string',
-        'country' => 'string',
-        'phone' => 'string',
-    ];
-
-
-    // Set the user who created or updated the record
     protected static function booted()
     {
         static::creating(function ($person) {
@@ -55,12 +39,9 @@ class Person extends Model
         });
     }
 
-    // Relationship with User model
-    public function user()
+    // ✅ Relationship to Administrator (1-to-1)
+    public function administrator()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(Administrator::class, 'id', 'id');
     }
-
-
-
 }
