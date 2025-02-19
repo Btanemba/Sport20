@@ -29,8 +29,8 @@ class AdministratorCrudController extends CrudController
         CRUD::column('id')->label('Person ID');
         CRUD::column('level')->label('Admin Level');
         CRUD::column('remark')->label('Remark');
-        CRUD::column('createdBy.name')->label('Created By');
-        CRUD::column('updatedBy.name')->label('Updated By');
+        CRUD::column('createdBy.email')->label('Created By');
+        CRUD::column('updatedBy.email')->label('Updated By');
         CRUD::column('created_at')->label('Created At');
         CRUD::column('updated_at')->label('Updated At');
     }
@@ -67,7 +67,7 @@ class AdministratorCrudController extends CrudController
     // Add created_by as a hidden field
     CRUD::addField([
         'name' => 'created_by',
-        'type' => 'text',
+        'type' => 'hidden',
         'value' => backpack_user()->id, // Automatically set the creator
     ]);
    
@@ -78,7 +78,7 @@ class AdministratorCrudController extends CrudController
         // Fields to display in the update form
         CRUD::field('level')->label('Admin Level');
         CRUD::field('remark')->label('Remark')->type('textarea');
-        CRUD::field('updated_by')->type('text')->value(backpack_user()->id); // Automatically set the updater
+        CRUD::field('updated_by')->type('hidden')->value(backpack_user()->id); // Automatically set the updater
     }
 
 
