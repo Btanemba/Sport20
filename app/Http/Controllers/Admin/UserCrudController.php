@@ -65,7 +65,7 @@ class UserCrudController extends CrudController
             ->label('Gender')
             ->searchLogic(function ($query, $column, $searchTerm) {
                 $query->orWhereHas('person', function ($q) use ($searchTerm) {
-                    $q->where('street', 'like', '%' . $searchTerm . '%');
+                    $q->where('gender', 'like', '%' . $searchTerm . '%');
                 });
             })
             ->orderable(true); // Make sortable
@@ -159,7 +159,7 @@ class UserCrudController extends CrudController
         CRUD::field('person.gender')
         ->label('Gender')
         ->type('select_from_array')
-        ->options([1 => 'Male', 0 => 'Female']);
+        ->options(['Male' => 'Male', 'Female' => 'Female']);
        
      
         CRUD::field('person.street')->label('Street');
@@ -202,7 +202,7 @@ class UserCrudController extends CrudController
         $person = $user->person ?? new Person();
         $person->first_name = request('person.first_name');
         $person->last_name = request('person.last_name');
-        $person->street = request('person.gender');
+        $person->gender = request('person.gender');
         $person->street = request('person.street');
         $person->number = request('person.number');
         $person->city = request('person.city');
