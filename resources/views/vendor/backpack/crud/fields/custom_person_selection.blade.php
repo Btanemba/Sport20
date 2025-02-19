@@ -5,10 +5,6 @@
     $existingAdmins = $field['existingAdmins']; // List of existing admins
 @endphp
 
-<div class="mb-3" style="display: flex; justify-content: flex-end;">
-    <input type="text" id="searchBar" class="form-control w-25" placeholder="Search by name..." />
-</div>
-
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -17,7 +13,7 @@
             <th>Remark</th>
         </tr>
     </thead>
-    <tbody id="personTable">
+    <tbody>
         @foreach ($persons as $person)
             @php
                 $isAdmin = in_array($person->id, $existingAdmins); // Check if the person is already an admin
@@ -31,12 +27,12 @@
                 <td>
                     <input type="text" name="level[{{ $person->id }}]" class="form-control level-field"
                         value="{{ $isAdmin ? \App\Models\Administrator::find($person->id)->level : '' }}"
-                        {{ $isAdmin ? '' : 'disabled' }}>
+                        {{ $isAdmin ? '' : 'disabled' }} style="width: 100px;"> <!-- Reduced width -->
                 </td>
                 <td>
                     <input type="text" name="remark[{{ $person->id }}]" class="form-control remark-field"
                         value="{{ $isAdmin ? \App\Models\Administrator::find($person->id)->remark : '' }}"
-                        {{ $isAdmin ? '' : 'disabled' }}>
+                        {{ $isAdmin ? '' : 'disabled' }} style="width: 150px;"> <!-- Reduced width -->
                 </td>
             </tr>
         @endforeach
@@ -68,22 +64,6 @@
         document.querySelector('form').addEventListener('submit', function (e) {
             document.querySelectorAll('input[disabled]').forEach(input => {
                 input.removeAttribute('name'); // Remove the name attribute to exclude it from submission
-            });
-        });
-
-        // Search functionality
-        const searchBar = document.getElementById('searchBar');
-        searchBar.addEventListener('input', function () {
-            const searchTerm = searchBar.value.toLowerCase();
-            const rows = document.querySelectorAll('#personTable tr');
-            rows.forEach(row => {
-                const nameCell = row.querySelector('td');
-                const name = nameCell.textContent.toLowerCase();
-                if (name.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
             });
         });
     });

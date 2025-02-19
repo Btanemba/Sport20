@@ -50,4 +50,9 @@ class Administrator extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    public function user()
+{
+    return $this->belongsTo(User::class, 'id', 'id'); // Ensure the correct foreign key
+}
+
 }
