@@ -191,6 +191,24 @@ class UserCrudController extends CrudController
 
     public function update($id)
     {
+
+         // Validate the request
+    $validatedData = request()->validate([
+        'email' => 'required|email|unique:users,email,' . $id,
+        'person.first_name' => 'required|string|max:255',
+        'person.last_name' => 'required|string|max:255',
+        'person.gender' => 'required|in:Male,Female',
+        'person.street' => 'required|string|max:255',
+        'person.number' => 'required|string|max:255',
+        'person.city' => 'required|string|max:255',
+        'person.zip' => 'required|string|max:255',
+        'person.region' => 'required|string|max:255',
+        'person.country' => 'required|string|max:255',
+        'person.phone' => 'required|string|max:255',
+        'active' => 'required|boolean',
+        'two_factor_secret' => 'nullable|boolean',
+    ]);
+
         // Find the user and update basic details
         $user = User::findOrFail($id);
         $user->email = request('email');
