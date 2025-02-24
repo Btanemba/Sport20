@@ -38,7 +38,7 @@ class AdministratorCrudController extends CrudController
         // CRUD::column('remark')->label('Remark');
         // CRUD::column('createdBy.email')->label('Created By');
         // CRUD::column('updatedBy.email')->label('Updated By');
-        // CRUD::column('created_at')->label('Created At');
+         CRUD::column('created_at')->label('Created At');
         CRUD::column('updated_at')->label('Updated At');
     }
 

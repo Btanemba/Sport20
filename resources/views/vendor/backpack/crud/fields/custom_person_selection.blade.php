@@ -44,7 +44,19 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.person-checkbox').forEach(checkbox => {
+
+        $('input.person-checkbox').each(function(e,element) {
+            console.log(element);
+            console.log(element.checked);
+            if(element.checked) {
+                $(element).attr("disabled", true);
+                $('input[name="level[' + (e+1) + ']"]').attr("disabled", true)
+                $('input[name="remark[' + (e+1) + ']"]').attr("disabled", true)
+            }
+        });
+
+
+         document.querySelectorAll('.person-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', function () {
                 const personId = this.value;
                 const levelField = document.querySelector(`input[name="level[${personId}]"]`);
