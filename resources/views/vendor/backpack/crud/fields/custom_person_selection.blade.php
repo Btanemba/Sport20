@@ -1,52 +1,41 @@
-
-
 @php
     $persons = $field['persons']; // List of persons passed from the controller
-    $existingAdmins = $field['existingAdmins']; // List of existing admins
+    $existingAdmins = \App\Models\Administrator::whereIn('id', $field['existingAdmins'])->pluck('level', 'id')->toArray();
+    $adminRemarks = \App\Models\Administrator::whereIn('id', $field['existingAdmins'])->pluck('remark', 'id')->toArray();
 @endphp
 
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Admin Check</th>
+            <th style="width: 60px;">Admin Check</th> <!-- Set width -->
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Admin Level</th>
-            <th>Remark</th>
+            <th style="width: 60px;">Admin Level</th> <!-- Set width -->
+            <th style="width: 30px;">Remark</th> <!-- Set width -->
+            
         </tr>
     </thead>
     <tbody>
         @foreach ($persons as $person)
             @php
-                $isAdmin = in_array($person->id, $existingAdmins); // Check if the person is already an admin
+                $isAdmin = isset($existingAdmins[$person->id]);
             @endphp
             <tr>
                 <td>
                     <input type="checkbox" name="person_ids[]" value="{{ $person->id }}" class="person-checkbox"
                         {{ $isAdmin ? 'checked' : '' }} > 
-                    {{-- {{ $person->first_name }} {{ $person->last_name }} <!-- Display person's name --> --}}
                 </td>
-                <td>
-                    {{-- <input type="checkbox" name="person_ids[]" value="{{ $person->id }}" class="person-checkbox" --}}
-                        {{-- {{ $isAdmin ? 'checked' : '' }}> --}}
-                    {{ $person->first_name }}  <!-- Display person's name -->
-                </td>
-
-                <td>
-                    {{-- <input type="checkbox" name="person_ids[]" value="{{ $person->id }}" class="person-checkbox"
-                        {{ $isAdmin ? 'checked' : '' }}> --}}
-                   {{ $person->last_name }} <!-- Display person's name -->
-                </td>
-                
+                <td>{{ $person->first_name }}</td>
+                <td>{{ $person->last_name }}</td>
                 <td>
                     <input type="text" name="level[{{ $person->id }}]" class="form-control level-field"
-                        value="{{ $isAdmin ? \App\Models\Administrator::find($person->id)->level : '' }}"
-                        {{ $isAdmin ? '' : 'disabled' }} style="width: 100px;"> <!-- Reduced width -->
+                        value="{{ $isAdmin ? $existingAdmins[$person->id] : '' }}"
+                        {{ $isAdmin ? '' : 'disabled' }} style="width: 100px;">
                 </td>
                 <td>
                     <input type="text" name="remark[{{ $person->id }}]" class="form-control remark-field"
-                        value="{{ $isAdmin ? \App\Models\Administrator::find($person->id)->remark : '' }}"
-                        {{ $isAdmin ? '' : 'disabled' }} style="width: 150px;"> <!-- Reduced width -->
+                        value="{{ $isAdmin ? $adminRemarks[$person->id] : '' }}"
+                        {{ $isAdmin ? '' : 'disabled' }} style="width: 150px;">
                 </td>
             </tr>
         @endforeach
@@ -55,30 +44,27 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('.person-checkbox');
-        checkboxes.forEach(checkbox => {
+        document.querySelectorAll('.person-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', function () {
                 const personId = this.value;
                 const levelField = document.querySelector(`input[name="level[${personId}]"]`);
                 const remarkField = document.querySelector(`input[name="remark[${personId}]"]`);
 
                 if (this.checked) {
-                    levelField.removeAttribute('disabled');
-                    levelField.setAttribute('required', 'required');
-                    remarkField.removeAttribute('disabled');
+                    levelField.disabled = false;
+                    levelField.required = true;
+                    remarkField.disabled = false;
                 } else {
-                    levelField.setAttribute('disabled', 'disabled');
-                    levelField.removeAttribute('required');
-                    remarkField.setAttribute('disabled', 'disabled');
+                    levelField.disabled = true;
+                    levelField.required = false;
+                    remarkField.disabled = true;
                 }
             });
         });
 
         // Exclude disabled fields from form submission
-        document.querySelector('form').addEventListener('submit', function (e) {
-            document.querySelectorAll('input[disabled]').forEach(input => {
-                input.removeAttribute('name'); // Remove the name attribute to exclude it from submission
-            });
+        document.querySelector('form').addEventListener('submit', function () {
+            document.querySelectorAll('input[disabled]').forEach(input => input.removeAttribute('name'));
         });
     });
 </script>
