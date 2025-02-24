@@ -100,9 +100,14 @@ class AdministratorCrudController extends CrudController
             'remark.*' => 'nullable|string|max:255', // Ensure each remark value is a string
         ]);
 
-        // Fetch all existing administrators
+            // Fetch all existing administrators
+             //This variable is created using Administrator::pluck('id')->toArray();, which fetches all the IDs of existing administrators from the Administrator model. 
+             //The pluck('id') method returns an array of IDs from the database, and toArray() converts it into a plain PHP array.
+            // This array is then used to determine which administrators are currently in the system before any updates are made.
         $existingAdmins = Administrator::pluck('id')->toArray();
 
+
+      
         // Process selected persons
         foreach ($request->input('person_ids') as $personId) {
             if (isset($request->input('level')[$personId])) {
@@ -119,13 +124,18 @@ class AdministratorCrudController extends CrudController
         }
 
         // Remove unselected administrators
-        $selectedAdmins = $request->input('person_ids', []);
-        $adminsToRemove = array_diff($existingAdmins, $selectedAdmins);
+        // This variable is created by retrieving the person_ids from the request, which is the list of persons selected in the form.
+        // The $request->input('person_ids', []) retrieves the array of selected person IDs from the form input. If no person_ids are submitted, it defaults to an empty array.
 
+        
+       // $selectedAdmins = $request->input('person_ids', []);
+
+        // $adminsToRemove = array_diff($existingAdmins, $selectedAdmins);
+ 
         if (!empty($adminsToRemove)) {
             Administrator::whereIn('id', $adminsToRemove)->delete();
         }
-
+      
         return redirect()->to('admin/administrator')->with('success', 'Administrators updated successfully.');
     }
 }
