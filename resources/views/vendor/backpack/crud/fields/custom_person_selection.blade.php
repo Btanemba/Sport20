@@ -8,7 +8,9 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Person</th>
+            <th>Admin Check</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Admin Level</th>
             <th>Remark</th>
         </tr>
@@ -21,9 +23,21 @@
             <tr>
                 <td>
                     <input type="checkbox" name="person_ids[]" value="{{ $person->id }}" class="person-checkbox"
-                        {{ $isAdmin ? 'checked' : '' }}>
-                    {{ $person->first_name }} {{ $person->last_name }} <!-- Display person's name -->
+                        {{ $isAdmin ? 'checked' : '' }} > 
+                    {{-- {{ $person->first_name }} {{ $person->last_name }} <!-- Display person's name --> --}}
                 </td>
+                <td>
+                    {{-- <input type="checkbox" name="person_ids[]" value="{{ $person->id }}" class="person-checkbox" --}}
+                        {{-- {{ $isAdmin ? 'checked' : '' }}> --}}
+                    {{ $person->first_name }}  <!-- Display person's name -->
+                </td>
+
+                <td>
+                    {{-- <input type="checkbox" name="person_ids[]" value="{{ $person->id }}" class="person-checkbox"
+                        {{ $isAdmin ? 'checked' : '' }}> --}}
+                   {{ $person->last_name }} <!-- Display person's name -->
+                </td>
+                
                 <td>
                     <input type="text" name="level[{{ $person->id }}]" class="form-control level-field"
                         value="{{ $isAdmin ? \App\Models\Administrator::find($person->id)->level : '' }}"
