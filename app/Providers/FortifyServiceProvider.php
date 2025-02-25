@@ -46,28 +46,30 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
         Fortify::resetPasswordView(fn () => view('auth.reset-password'));
         Fortify::verifyEmailView(fn () => view('auth.verify-email'));
-        Fortify::confirmPasswordView(function (){
-            return view('auth.passwords.confirm');
-        });
-
-        Fortify::twoFactorChallengeView(function () {
-            return view('auth.two-factor-challenge');
-        });
+        Fortify::confirmPasswordView(fn () => view('auth.passwords.confirm'));
+        Fortify::twoFactorChallengeView(fn () => view('auth.two-factor-challenge'));
 
         // Custom authentication logic
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
 
-            if ($user &&
-                Hash::check($request->password, $user->password) &&
-                $user->active) { // Check if the user is active
-                return $user;
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return null; // Invalid credentials
             }
 
-            // If the user is not active, throw a validation exception
-            throw ValidationException::withMessages([
-                Fortify::username() => [__('Your account is inactive. Please contact the administrator.')],
-            ]);
+            if (!$user->hasVerifiedEmail()) {
+                throw ValidationException::withMessages([
+                    'email' => __('Your email address is not verified.'),
+                ]);
+            }
+
+            if (!$user->active) {
+                throw ValidationException::withMessages([
+                    Fortify::username() => __('Your account is inactive. Please contact the administrator.'),
+                ]);
+            }
+
+            return $user;
         });
     }
 }
